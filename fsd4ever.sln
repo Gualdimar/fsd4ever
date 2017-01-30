@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fsd4ever", "fsd4ever\fsd4ever.csproj", "{1B3E00FD-1434-49C4-8F30-CD8E96E3CDD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fsd4ever.Server", "fsd4ever.Server\fsd4ever.Server.csproj", "{79B9FD4B-6835-483D-9C45-A84423273841}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{1B3E00FD-1434-49C4-8F30-CD8E96E3CDD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B3E00FD-1434-49C4-8F30-CD8E96E3CDD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B3E00FD-1434-49C4-8F30-CD8E96E3CDD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79B9FD4B-6835-483D-9C45-A84423273841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79B9FD4B-6835-483D-9C45-A84423273841}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79B9FD4B-6835-483D-9C45-A84423273841}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79B9FD4B-6835-483D-9C45-A84423273841}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
