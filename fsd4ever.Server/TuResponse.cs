@@ -2,11 +2,6 @@
 {
     public class TuResponse
     {
-        public TuResponseItems[] Tus { get; set; }
-    }
-
-    public class TuResponseItems
-    {
         public string TitleUpdateId { get; set; }
         public string Titleid { get; set; }
         public string Mediaid { get; set; }
@@ -20,4 +15,5 @@
         public string Url { get; set; }
         public string Displayname { get; set; }
     }
+
 }

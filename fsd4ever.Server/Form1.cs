@@ -5,81 +5,61 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
+using fsd4ever.Server.MiniHttpd;
 using Newtonsoft.Json;
 
-namespace fsd4ever.Server
-{
-    public partial class Form1 : Form
-    {
+namespace fsd4ever.Server {
+    public partial class Form1 : Form {
         private readonly BackgroundWorker bw = new BackgroundWorker();
-        private readonly HttpListener listener = new HttpListener();
+        private readonly HttpServer http = new HttpServer();
 
-        public Form1()
-        {
-            InitializeComponent();
-        }
+        public Form1() { InitializeComponent(); }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                button1.Enabled = false;
-                if (listener.IsListening)
-                {
-                    listener.Prefixes.Clear();
-                    listener.Abort();
-                }
-                var portstr = $"{numericUpDown1.Value:F0}";
-                listener.Prefixes.Add($"http://*:{portstr}/");
-                AppendLine($"Listening on port {portstr}");
-                listener.Start();
-                if (bw.IsBusy)
-                    return;
-                bw.DoWork += (o, args) =>
-                {
-                    while (true)
-                    {
-                        var ctx = listener.GetContext();
-                        AppendLine(ctx.Request.Url.OriginalString);
-                        var phpScript = ctx.Request.Url.Segments[1];
-                        using (
-                            var writer = new StreamWriter(ctx.Response.OutputStream, Encoding.GetEncoding("ISO-8859-1"))
-                        )
-                        {
-                            var ret = HandleRequest(phpScript, ctx.Request.QueryString);
-                            writer.WriteLine(ret);
-                            ctx.Response.StatusCode = ret != null ? 200 : 404;
-                        }
-                        
-                    }
-                };
-                bw.RunWorkerAsync();
+        private void button1_Click(object sender, EventArgs e) {
+            try {
+                if (http.IsRunning)
+                    http.Stop();
+                http.LogRequests = true;
+                http.LogConnections = true;
+                http.Log = Console.Out;
+                http.Port = (int)numericUpDown1.Value;
+                http.Start();
+                http.ValidRequestReceived += (o, args) => {
+                                                 AppendLine(args.Request.Uri.OriginalString);
+                                                 var phpScript = args.Request.Uri.Segments[1];
+                                                 var ret = HandleRequest(phpScript, args.Request.Query);
+                                                 args.Request.Response.ResponseCode = ret != null ? "200" : "404";
+                                                 if (ret != null) {
+                                                     args.Request.Response.BeginChunkedOutput();
+                                                     using (
+                                                         var writer =
+                                                             new StreamWriter(args.Request.Response.ResponseContent,
+                                                                              Encoding.GetEncoding("ISO-8859-1"))) {
+                                                         writer.WriteLine(ret);
+                                                     }
+                                                 }
+                                             };
+                AppendLine($"Listening on port {http.Port}");
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 AppendLine("Error:");
                 AppendLine(ex.ToString());
             }
         }
 
-        private static T GetJson<T>(string url)
-        {
-            using (var wc = new WebClient())
-            {
+        private static T GetJson<T>(string url) {
+            using (var wc = new WebClient()) {
                 return JsonConvert.DeserializeObject<T>(wc.DownloadString(url));
             }
         }
 
-        private string HandleRequest(string phpScript, NameValueCollection requestQueryString)
-        {
+        private string HandleRequest(string phpScript, NameValueCollection requestQueryString) {
             var sb = new StringBuilder();
-            try
-            {
+            try {
                 if (phpScript.Equals("tu.php", StringComparison.OrdinalIgnoreCase) ||
-                    phpScript.Equals("tu_f.php", StringComparison.OrdinalIgnoreCase))
-                {
+                    phpScript.Equals("tu_f.php", StringComparison.OrdinalIgnoreCase)) {
                     sb.AppendLine("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><updates>");
-                    foreach (var t in GetJson<TuResponse>("http://xboxunity.net/api/tu/" + requestQueryString["tid"]).Tus){
+                    foreach (var t in GetJson<TuResponse[]>("http://xboxunity.net/api/tu/" + requestQueryString["tid"])) {
                         if (!requestQueryString["mid"].Equals(t.Mediaid, StringComparison.OrdinalIgnoreCase) &&
                             phpScript.Equals("tu.php", StringComparison.OrdinalIgnoreCase))
                             break; // Skip this one
@@ -100,27 +80,23 @@ namespace fsd4ever.Server
                     }
                     sb.AppendLine("</updates>");
                 }
-                else if (phpScript.Equals("q.php", StringComparison.OrdinalIgnoreCase))
-                {
+                else if (phpScript.Equals("q.php", StringComparison.OrdinalIgnoreCase)) {
                     //TODO: Implement this
                 }
-                else if (phpScript.Equals("cover.php", StringComparison.OrdinalIgnoreCase))
-                {
+                else if (phpScript.Equals("cover.php", StringComparison.OrdinalIgnoreCase)) {
                     //TODO: Implement this
                 }
+                return sb.ToString();
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 AppendLine("ERROR:");
                 AppendLine(ex.ToString());
+                return null;
             }
-            return null;
         }
 
-        public void AppendLine(string value)
-        {
-            if (InvokeRequired)
-            {
+        public void AppendLine(string value) {
+            if (InvokeRequired) {
                 Invoke(new Action<string>(AppendLine), value);
                 return;
             }

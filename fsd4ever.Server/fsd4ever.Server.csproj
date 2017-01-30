@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -57,6 +58,21 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="MiniHttpd\BasicAuthenticator.cs" />
+    <Compile Include="MiniHttpd\ByteRange.cs" />
+    <Compile Include="MiniHttpd\ChunkedStream.cs" />
+    <Compile Include="MiniHttpd\ClientEventArgs.cs" />
+    <Compile Include="MiniHttpd\ContentTypes.cs" />
+    <Compile Include="MiniHttpd\HttpClient.cs" />
+    <Compile Include="MiniHttpd\HttpRequest.cs" />
+    <Compile Include="MiniHttpd\HttpRequestException.cs" />
+    <Compile Include="MiniHttpd\HttpResponse.cs" />
+    <Compile Include="MiniHttpd\HttpServer.cs" />
+    <Compile Include="MiniHttpd\IAuthenticator.cs" />
+    <Compile Include="MiniHttpd\ImmediateResponseStream.cs" />
+    <Compile Include="MiniHttpd\StatusCodes.cs" />
+    <Compile Include="MiniHttpd\UriQuery.cs" />
+    <Compile Include="MiniHttpd\UrlEncoding.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TuResponse.cs" />
