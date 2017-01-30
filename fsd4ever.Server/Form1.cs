@@ -81,10 +81,41 @@ namespace fsd4ever.Server {
                     sb.AppendLine("</updates>");
                 }
                 else if (phpScript.Equals("q.php", StringComparison.OrdinalIgnoreCase)) {
-                    //TODO: Implement this
+                    sb.AppendLine("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><covers>");
+                    foreach (var t in GetJson<CoverResponse[]>("http://xboxunity.net/api/q/" + requestQueryString["pwd"])) {
+                        sb.Append("<title ");
+                        sb.Append("id=\"" + t.Titleid + "\" ");
+                        sb.Append("name=\"" + t.Name + "\" ");
+                        sb.Append("mediaid=\"\" ");
+                        sb.Append("filename=\"Cover.png\" ");
+                        sb.Append("type=\"\" ");
+                        sb.Append("mainlink=\"" + t.Url + "\" ");
+                        sb.Append("front=\"" + t.Front.Replace("boxart", "boxartfront") + "\"");
+                        sb.Append("Official=\"0\"");
+                        sb.AppendLine("/>");
+                    }
+                    sb.AppendLine("</covers>");
                 }
                 else if (phpScript.Equals("cover.php", StringComparison.OrdinalIgnoreCase)) {
-                    //TODO: Implement this
+                    sb.AppendLine("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><covers>");
+                    var url = "http://xboxunity.net/api/Covers/";
+                    if (requestQueryString["query"].Equals("TitleID", StringComparison.OrdinalIgnoreCase))
+                        url += requestQueryString["id"];
+                    else
+                        url += "00000000/" + requestQueryString["id"].Replace(",", " ");
+                    foreach (var t in GetJson<CoverResponse[]>(url)) {
+                        sb.Append("<title ");
+                        sb.Append("id=\"" + t.Titleid + "\" ");
+                        sb.Append("name=\"" + t.Name + "\" ");
+                        sb.Append("mediaid=\"\" ");
+                        sb.Append("filename=\"Cover.png\" ");
+                        sb.Append("type=\"\" ");
+                        sb.Append("mainlink=\"" + t.Url + "\" ");
+                        sb.Append("front=\"" + t.Front + "\"");
+                        sb.Append("Official=\"" + (t.Official ? 1 : 0) + "\"");
+                        sb.AppendLine("/>");
+                    }
+                    sb.AppendLine("</covers>");
                 }
                 return sb.ToString();
             }

@@ -1,7 +1,5 @@
-﻿namespace fsd4ever.Server
-{
-    public class TuResponse
-    {
+﻿namespace fsd4ever.Server {
+    public class TuResponse {
         public string TitleUpdateId { get; set; }
         public string Titleid { get; set; }
         public string Mediaid { get; set; }
@@ -15,5 +13,4 @@
         public string Url { get; set; }
         public string Displayname { get; set; }
     }
-
 }
