@@ -38,6 +38,7 @@
             // tuURL
             // 
             this.tuURL.Location = new System.Drawing.Point(108, 12);
+            this.tuURL.MaxLength = 44;
             this.tuURL.Name = "tuURL";
             this.tuURL.Size = new System.Drawing.Size(262, 20);
             this.tuURL.TabIndex = 0;
@@ -45,6 +46,7 @@
             // coverURL
             // 
             this.coverURL.Location = new System.Drawing.Point(108, 38);
+            this.coverURL.MaxLength = 38;
             this.coverURL.Name = "coverURL";
             this.coverURL.Size = new System.Drawing.Size(262, 20);
             this.coverURL.TabIndex = 1;
