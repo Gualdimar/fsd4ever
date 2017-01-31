@@ -9,7 +9,7 @@ namespace fsd4ever
     public partial class Main : Form
     {
         private int _urlLength = 0x3A;
-        private int _tuOffset = 0x2CA36B;
+        private int _tuOffset = 0x2CA36C;
         private int _covtermOffset = 0x2CBE1C;
         private int _covidOffset = 0x2CBE58;
         private string _tuLink = "?tid=%08x&mid=%08x";
