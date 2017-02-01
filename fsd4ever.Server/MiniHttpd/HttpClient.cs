@@ -186,7 +186,7 @@ namespace fsd4ever.Server.MiniHttpd {
                     Disconnect();
                     if (!(e.InnerException is SocketException)) {
 #if !DEBUG
-						server.Log.WriteLine("Error: " + e.ToString());
+						Server.Log.WriteLine("Error: " + e.ToString());
 #else
                         throw;
 #endif
@@ -198,7 +198,7 @@ namespace fsd4ever.Server.MiniHttpd {
 #if !DEBUG
 				catch(Exception e)
 				{
-					server.Log.WriteLine("Error: " + e.ToString());
+					Server.Log.WriteLine("Error: " + e.ToString());
 					Disconnect();
 				}
 #endif
